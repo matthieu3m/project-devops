@@ -51,6 +51,8 @@ jobs:
 
     #steps: Chaque step correspond à une action ou à une commande qui va être exécutée.
     steps: 
+
+      #1
       - name: Deploy to Github Pages
         id: deployment
         uses: actions/deploy-pages@v4
