@@ -1,0 +1,21 @@
+---
+
+    name: Cowsay Workflow
+    
+    # Le workflow se déclenchera quand on fera un git push sur main
+    on:
+      push:
+        branches:
+          - main
+    
+    jobs:
+      cowsay-job:
+        runs-on: ubuntu-latest
+    
+        steps:
+          # Étape pour afficher une vache avec cowsay
+          - name: Cowsay Hello
+            run: |
+              sudo apt-get update
+              sudo apt-get install -y cowsay
+              cowsay "Hello from GitHub Actions!"

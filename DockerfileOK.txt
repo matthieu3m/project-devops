@@ -1,0 +1,41 @@
+# Utiliser l'image de base Python avec Bullseye
+FROM python:alpine AS base
+
+# Définir l'environnement de travail
+WORKDIR /app
+COPY requirements.txt .
+RUN apk add --no-cache git
+RUN pip install -r requirements.txt
+
+# Configurer les variables d'environnement AWS
+#ENV AWS_CONFIG_FILE=/app/.aws/config
+#ENV AWS_SHARED_CREDENTIALS_FILE=/app/.aws/credentials
+
+
+# Créer un utilisateur non-root pour une meilleure sécurité (optionnel)
+#RUN useradd -ms /bin/bash devuser
+#USER devuser
+
+# Stage to allow init mkdocs project
+#FROM base as init
+#CMD ["mkdocs", "new", "example"]
+
+FROM base as dev
+RUN apk add --no-cache neovim
+CMD ["mkdocs", "serve", "-a", "0.0.0.0:8000"]
+
+# On build la doc en elle même
+FROM base as build
+COPY . .
+# Étape 1 : Configurer Git pour considérer le répertoire comme sécurisé
+RUN git config --global --add safe.directory .
+# Étape 2 : Exécuter mkdocs pour générer la documentation
+RUN mkdocs build
+
+FROM httpd:2.4
+COPY --from=build /app/site /usr/local/apache2/htdocs/
+COPY httpd.conf /usr/local/apache2/conf/
+
+
+# Exposer un port si nécessaire (par exemple pour une application web)
+EXPOSE 8000

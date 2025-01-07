@@ -1,0 +1,6 @@
+---
+
+- name: turn off apache
+  ansible.builtin.systemd:
+    state: started
+    name: httpd

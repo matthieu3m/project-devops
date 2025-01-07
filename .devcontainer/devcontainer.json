@@ -1,0 +1,14 @@
+{
+    "dockerFile": "./../Dockerfile",
+    //"build": {
+    //    "target": "dev"
+    
+    "postStartCommand": "echo 'Port 80 exposé, Apache démarré' && service apache2 start",  
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "redhat.vscode-yaml"
+            ]
+        }
+    }
+}

@@ -1,0 +1,7 @@
+---
+- name: Configure Apache2 virtual hosts (based on variables)
+  template:
+    src: apache2.conf.j2  # Template Jinja2 pour configurer un hôte virtuel Apache
+    dest: /etc/apache2/sites-available/000-default.conf
+    mode: '0644'
+  tags: apache2

@@ -1,0 +1,37 @@
+- name: Ajout de l'utilisateur (bin/bash)
+  user:
+    name: "{{ item }}"
+    shell: /bin/bash
+    state: present
+    create_home: yes
+  loop:
+    - zetou
+    - loulou
+    - yani
+
+- name: Définir le mot de passe de tous les utilisateurs
+  user:
+    name: "{{ item }}"
+    password: rocknroll
+  loop:
+    - zetou
+    - loulou
+    - yani
+
+- name: Ajout de l'utilisateur zetou au groupe sudo
+  user:
+    name: zetou
+    groups: sudo
+    append: yes
+
+- name: Ajout de l'utilisateur loulou au groupe sudo
+  user:
+    name: loulou
+    groups: sudo
+    append: yes
+
+- name: Ajout de l'utilisateur yani au groupe sudo
+  user:
+    name: yani
+    groups: sudo
+    append: yes

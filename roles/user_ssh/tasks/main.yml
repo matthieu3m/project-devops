@@ -1,0 +1,14 @@
+---
+
+- name: Create user
+  ansible.builtin.user:
+    name: zef
+    create_home: true
+    shell: /bin/bash
+
+- name: Copy SSH keys
+  ansible.posix.authorized_key:
+    user: zef
+    state: present
+    key: "https://github.com/{{ item }}.keys"
+  loop: "{{ ssh_user }}"

@@ -1,0 +1,29 @@
+---
+
+- name: Install Apache2 package
+  package:
+    name: apache2
+    state: present
+  tags: apache2
+
+- name: Ensure Apache2 service is started and enabled
+  systemd:
+    name: apache2
+    state: started
+    enabled: yes
+  tags: apache2
+
+- name: Include config
+  ansible.builtin.include_tasks:
+    file: roles/apache2/tasks/config.yml
+
+- name: Enable Apache2 site configuration
+  command: a2ensite 000-default.conf
+  tags: apache2
+
+- name: Reload Apache2 service to apply changes
+  systemd:
+    name: apache2
+    state: reloaded
+  tags: apache2
+

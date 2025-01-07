@@ -1,0 +1,9 @@
+---
+- name: Setup Apache2 and SSH users on app servers
+  hosts: webservers_apache
+  become: yes  # Exécution avec privilèges sudo
+
+  roles:
+    - apache2    # Assure-toi que ce rôle existe et contient la configuration d'Apache2
+
+ 

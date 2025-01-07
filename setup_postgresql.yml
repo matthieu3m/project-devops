@@ -1,0 +1,70 @@
+---
+- name: Install and configure PostgreSQL on db1 and db2
+  hosts: dbservers
+  become: yes  # Utiliser sudo pour les tâches nécessitant des privilèges administratifs
+
+  tasks:
+    - name: Ensure PostgreSQL is installed
+      package:
+        name: "postgresql-{{ postgresql_version }}"
+        state: present
+
+    - name: Initialize PostgreSQL database
+      command:
+        cmd: "/usr/pgsql-{{ postgresql_version }}/bin/postgresql-{{ postgresql_version }}-setup initdb"
+        creates: "/var/lib/pgsql/{{ postgresql_version }}/data"
+      when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+
+    - name: Start and enable PostgreSQL service
+      systemd:
+        name: postgresql
+        state: started
+        enabled: yes
+
+    - name: Ensure PostgreSQL is running
+      service:
+        name: postgresql
+        state: started
+
+    - name: Configure PostgreSQL to allow remote connections (pg_hba.conf)
+      lineinfile:
+        path: "/etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf" 
+        regexp: '^host'
+        line: 'host    all             all             0.0.0.0/0            md5'
+        state: present
+
+    - name: Update postgresql.conf for remote listening
+      lineinfile:
+        path: "/etc/postgresql/{{ postgresql_version }}/main/postgresql.conf"
+        regexp: '^#listen_addresses'
+        line: "listen_addresses = '*'"
+        state: present
+
+    - name: Reload PostgreSQL to apply the new configuration
+      systemd:
+        name: postgresql
+        state: reloaded
+
+    - name: Create a PostgreSQL user and database (optional)
+      become_user: postgres
+      postgresql_user:
+        name: "myuser"
+        password: "mypassword"
+        role_attr_flags: "CREATEDB"
+        state: present
+
+    - name: Create a PostgreSQL database (optional)
+      become_user: postgres
+      postgresql_db:
+        name: "mydatabase"
+        owner: "myuser"
+        state: present
+
+    - name: Verify PostgreSQL installation
+      command: "psql --version"
+      register: psql_version
+      changed_when: false
+
+    - name: Print PostgreSQL version
+      debug:
+        msg: "PostgreSQL version is {{ psql_version.stdout }}"

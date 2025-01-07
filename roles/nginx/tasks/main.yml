@@ -1,0 +1,33 @@
+---
+
+- name: Ensure Nginx is installed
+  package:
+    name: nginx
+    state: present
+  notify: turn off apache
+
+- name: Just force systemd to reread configs (2.4 and above)
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+
+- name: Start and enable Nginx service
+  systemd:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Ensure Nginx is running
+  service:
+    name: nginx
+    state: started
+
+- name: Configure Nginx to serve a simple HTML page
+  copy:
+    dest: "/usr/share/nginx/html/index.html"
+    content: "<html><body><h1>Welcome to Nginx on {{ inventory_hostname }}</h1></body></html>"
+    mode: '0644'
+
+- name: Reload Nginx to apply any configuration changes
+  systemd:
+    name: nginx
+    state: reloaded

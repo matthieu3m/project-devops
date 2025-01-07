@@ -1,0 +1,9 @@
+---
+- name: Création d'un user avec prénon/pseudo
+  hosts: webservers
+  become: true
+
+  roles:
+    - create_user
+
+
