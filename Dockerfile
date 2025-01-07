@@ -1,36 +1,32 @@
-# Étape 1 : Utiliser l'image de base Python
-FROM python:3.9-alpine AS base
-
-# Définir l'environnement de travail
+# Pour builder ou exécuter la doc
+FROM python:alpine AS base
 WORKDIR /app
-
-# Copier requirements.txt dans l'image
 COPY requirements.txt .
+RUN apk add --no-cache git
+RUN pip install -r requirements.txt
 
-# Installer les dépendances système nécessaires (git, etc.) et pip
-RUN apk update && \
-    apk add --no-cache git && \
-    # Installer les dépendances Python
-    pip install --no-cache-dir -r requirements.txt
+# Stage to allow init mkdocs project
+FROM base as init
+CMD ["mkdocs", "new", "example"]
 
-FROM base AS dev
+# Stage to dev locally, pas de copy car on bind mount
+FROM base as dev
+RUN apk add --no-cache neovim
 CMD ["mkdocs", "serve", "-a", "0.0.0.0:8000"]
 
-FROM base AS build
+# On build la doc en elle même
+FROM base as build
 COPY . .
 RUN git config --global --add safe.directory .
-# Ajouter ici des commandes pour générer des fichiers nécessaires, par exemple:
 RUN mkdocs build
 
-# Étape 2 : Utiliser l'image Apache pour héberger les fichiers
+## Et on place ca dans le container final
+#FROM nginx:alpine
+#COPY --from=build /app/site /usr/share/nginx/html
 FROM httpd:2.4
 
-# Copier les fichiers générés depuis l'étape 'build' dans le répertoire d'Apache
+# Activer mpm_event
+#RUN sed -i 's/#LoadModule mpm_event_module/LoadModule mpm_event_module/' /usr/local/apache2/conf/httpd.conf
+
 COPY --from=build /app/site /usr/local/apache2/htdocs/
 COPY httpd.conf /usr/local/apache2/conf/
-
-# Exposer le port 80 pour Apache
-EXPOSE 8000
-
-# Commande pour démarrer Apache
-CMD ["httpd-foreground"]
