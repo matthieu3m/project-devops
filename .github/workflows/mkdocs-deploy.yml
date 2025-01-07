@@ -38,11 +38,11 @@
           #1
           - name: Get index.html from repository
             uses: actions/checkout@v4
-            with:
+            #with:
               # ==> sparse-checkout permet de cloner uniquement la partie souhaité du dépot (ici index.html)
-              sparse-checkout: |
-                mkdocs.yml
-              sparse-checkout-cone-mode: false
+              #sparse-checkout: |
+                #site
+              #sparse-checkout-cone-mode: false
 
           #2
           - name: Upload static files as artfact
