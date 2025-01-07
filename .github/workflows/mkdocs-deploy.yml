@@ -1,0 +1,76 @@
+---
+    name: Deployment Mkdocs
+
+    on:
+      push:
+        branches:
+           - main
+
+    jobs:
+
+      # ==> TEST
+      test:
+        runs-on: ubuntu-latest
+      
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v2
+
+          - name: Setup Python
+            uses: actions/setup-python@v2
+            with:
+              python-version: "3.9"
+
+          - name: Install dependencies Python
+            run: |
+              pip install -r requirements.txt
+              pip install mkdocs
+        
+          - name: Verification if Mkdocs build
+            run: mkdocs build --strict
+
+      # ==> BUILD
+      build:
+        runs-on: ubuntu-latest
+        needs: test
+
+        steps:
+          #1
+          - name: Get index.html from repository
+            uses: actions/checkout@v4
+            with:
+              # ==> sparse-checkout permet de cloner uniquement la partie souhaité du dépot (ici index.html)
+              sparse-checkout: |
+                mkdocs.yml
+              sparse-checkout-cone-mode: false
+
+          #2
+          - name: Upload static files as artfact
+            id: deployment
+            uses: actions/upload-pages-artifact@v3
+            with:
+              path: .
+
+      # ==> DEPLOY
+      deploy:
+
+        needs: build
+
+        permissions:
+          pages: write
+          id-token: write
+
+        environment:
+          name: github-pages static
+          url: ${{ steps.deployment.outputs.page_url }}
+
+        runs-on: ubuntu-latest
+
+        #steps: Chaque step correspond à une action ou à une commande qui va être exécutée.
+        steps: 
+
+        #1
+          - name: Deploy to Github Pages
+            id: deployment
+            uses: actions/deploy-pages@v4
+
