@@ -24,7 +24,7 @@ jobs:
         with:
           # ==> sparse-checkout permet de cloner uniquement la partie souhaité du dépot (ici index.html)
           sparse-checkout: |
-            static_site/index.html
+            index.html
           sparse-checkout-cone-mode: false
 
       #2
@@ -32,7 +32,7 @@ jobs:
         id: deployment
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./static_site
+          path: .
   
   # ==> DEPLOY
   deploy:
