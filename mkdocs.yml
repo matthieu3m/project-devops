@@ -31,4 +31,5 @@ theme:
 
 nav:
   - Home: index.md
+  - Deploy: deploy.md
   - About: about.md
