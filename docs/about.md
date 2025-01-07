@@ -1,3 +1,3 @@
 # Information de ce machin
 
-Machin bidule chouhette 
+Machin bidule chouhette

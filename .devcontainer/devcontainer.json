@@ -1,9 +1,15 @@
 {
     "dockerFile": "./../Dockerfile",
-    //"build": {
-    //    "target": "dev"
-    
-    "postStartCommand": "echo 'Port 80 exposé, Apache démarré' && service apache2 start",  
+    "build": {
+        "target": "dev"
+    },
+    "postStartCommand": "mkdocs serve -a 0.0.0.0:8000",  
+    "portsAttributes": {
+    "8000": {
+      "label": "MkDocs (Port 8000)",
+      "onAutoForward": "openBrowser" 
+    }
+  },
     "customizations": {
         "vscode": {
             "extensions": [
