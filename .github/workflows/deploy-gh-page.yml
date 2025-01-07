@@ -1,0 +1,56 @@
+---
+# Déclaration du nom du fichier yml
+name: Deploy-gh-page
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+ 
+
+jobs:
+
+  # ==> BUILD
+  build:
+    runs-on: ubuntu-latest
+
+    #steps: Chaque step correspond à une action ou à une commande qui va être exécutée.
+    steps:
+
+      #1
+      - name: Get index.html from repository
+        uses: actions/checkout@v4
+        with:
+          # ==> sparse-checkout permet de cloner uniquement la partie souhaité du dépot (ici index.html)
+          sparse-checkout: |
+            static_site/index.html
+          sparse-checkout-cone-mode: false
+
+      #2
+      - name: Upload static files as artfact
+        id: deployment
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./static_site
+  
+  # ==> DEPLOY
+  deploy:
+
+    needs: build
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages static
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+
+    #steps: Chaque step correspond à une action ou à une commande qui va être exécutée.
+    steps: 
+      - name: Deploy to Github Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
