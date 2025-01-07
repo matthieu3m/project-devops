@@ -24,7 +24,7 @@ jobs:
         with:
           # ==> sparse-checkout permet de cloner uniquement la partie souhaité du dépot (ici index.html)
           sparse-checkout: |
-            ./gh-page/index.html
+            index.html
           sparse-checkout-cone-mode: false
 
       #2
