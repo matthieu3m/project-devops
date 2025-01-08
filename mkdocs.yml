@@ -1,5 +1,10 @@
-site_name: ProjetV1
-docs_dir: docs
+site_name: DevOps Docs
+site_description: Documentations autour de la CI/CD et de Github
+site_url: http://localhost
+site_author: Matthieu
+
+repo_name: project-devops
+repo_url: https://github.com/matthieu3m/project-devops
 
 theme:
   name: material
@@ -28,8 +33,50 @@ theme:
     - navigation.tabs.sticky
     - toc.integrate
 
-
 nav:
-  - Home: index.md
-  - Deploy: deploy.md
-  - About: about.md
+  - Accueil: /
+  - Github:
+    - Gestion de compte: github/account.md
+    - Les hooks git: github/git-hooks.md
+    - Introduction à Github Action: github/ga-intro.md
+    - Le local runner: github/ga-local-runner.md
+    - Merge PR: github/merge.md
+    - Github pages: github/ga-github-pages.md
+  - Markdown:
+    - Les textes: markdown/Texte.md
+    - Le code: markdown/Code.md
+    - Les tableaux: markdown/tableaux.md
+  - Ansible:
+    - Introduction à Ansible: ansible/intro.md
+
+markdown_extensions:
+  #- mdx_truly_sane_lists # for mkdocs to indent nested lists with 2 spaces VS 4 by default
+  #- pymdownx.tabbed
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.critic
+  - pymdownx.magiclink
+  #- pymdownx.saneheaders
+  - pymdownx.smartsymbols
+  #- footnotes
+  - toc:
+      permalink: true
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.tilde
+  - pymdownx.tasklist:
+      custom_checkbox: true
+      clickable_checkbox: true
+plugins:
+  - tags
+  - search:
+      prebuild_index: false
+  - git-revision-date-localized:
+      enable_creation_date: true
+
+extra_css:
+  - _assets/stylesheets/extra.css
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.2.1/tablesort.min.js
+  - _assets/javascript/tables.js
