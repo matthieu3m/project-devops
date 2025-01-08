@@ -7,16 +7,43 @@ on:
       - preprod
 
 jobs:
+
+  # ==> BUILD
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Get data - checkout
+        uses: actions/checkout@v4
+
+      - name: Build mkdocs on docker (Creation image)
+        run: docker build --target build -t mkdocs-builder .
+
+      - name: Build mkdocs on docker (Run container)
+        run: docker container run --rm -v ./site:/app/site mkdocs-builder
+
+      - name: Upload static files as artifact
+        id: deployment
+        uses: actions/upload-artifact@v4
+        with:
+          path: site/
+          name: my_doc_mkdocs
+
+
+  # ==> DEPLOY
   deploy:
-    runs-on: self-hosted # Le runs-on ici est le label du runner du server concerné
+    runs-on: project_devops # Le runs-on ici est le label du runner du server concerné
+    needs: build # Ici nous avons beoins de build avant de commencer le travail du deploy
 
     steps:
       # Recupération du codes
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Upload data - artifact
+        id: deployment
+        uses: actions/upload-artifact@v4
+        with:
+          path: var/www/html 
+          name: my_doc_mkdocs
 
-      - run: |
-          cp -r site /var/www/html
-          
       
       
