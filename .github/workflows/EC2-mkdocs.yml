@@ -1,0 +1,46 @@
+name: Deploy mkdocs on EC2 server
+
+on:
+  push:
+    branches: 
+      - EC2
+
+jobs:
+  # ==> BUILD
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get data - checkout
+        uses: actions/checkout@v4
+
+      - name: Build mkdoc with Docker (Create image)
+        run: docker build --target build -t mkdocs-builder-EC2
+
+      - name: Build mkdoc with Docker (Run docker)
+        run: docker container run --rm -v ./site:/app/site mkdocs-builder-EC2
+
+      - name: Upload data
+        id: deployment
+        uses: actions/upload-artifact@v4
+        with:
+          path: site/
+          name: mkdocs_EC2
+
+  # ==> DEPLOY
+  deploy:
+    runs-on: ec2
+    needs: build
+
+    steps:
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+
+      - name: Download data
+        uses: actions/download-artifact@v4
+        with:
+          path: /var/www/html
+          name: mkdocs_EC2
+
