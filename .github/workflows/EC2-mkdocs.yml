@@ -37,6 +37,7 @@ jobs:
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          log-public-key: true
 
       - name: Download data
         uses: actions/download-artifact@v4
