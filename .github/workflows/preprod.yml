@@ -39,7 +39,7 @@ jobs:
     steps:
       # Recupération du codes
       - name: Upload data - artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/download-artifact@v4
         with:
           path: /var/www/html 
           name: my_doc_mkdocs
