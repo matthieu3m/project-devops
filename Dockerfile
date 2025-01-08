@@ -4,6 +4,8 @@ WORKDIR /app
 COPY requirements.txt .
 RUN apk add --no-cache git
 RUN pip install -r requirements.txt
+RUN pip install --upgrade mkdocs-material
+
 
 # Stage to allow init mkdocs project
 FROM base as init
@@ -17,8 +19,7 @@ CMD ["mkdocs", "serve", "-a", "0.0.0.0:8000"]
 # On build la doc en elle même
 FROM base as build
 COPY . .
-RUN git config --global --add safe.directory .
-RUN mkdocs build
+CMD ["mkdocs", "build"]
 
 ## Et on place ca dans le container final
 #FROM nginx:alpine
