@@ -11,7 +11,7 @@ jobs:
     runs-on: self-hosted # Le runs-on ici est le label du runner du server concerné
 
     steps:
-      # Recupération du code
+      # Recupération du codes
       - name: Checkout code
         uses: actions/checkout@v4
 
