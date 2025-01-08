@@ -41,7 +41,7 @@ jobs:
       - name: Upload data - artifact
         uses: actions/upload-artifact@v4
         with:
-          path: var/www/html 
+          path: /var/www/html 
           name: my_doc_mkdocs
 
       
