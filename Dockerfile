@@ -4,7 +4,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN apk add --no-cache git
 RUN pip install -r requirements.txt
-RUN pip install --upgrade mkdocs-material
+#RUN pip install --upgrade mkdocs-material
 
 
 # Stage to allow init mkdocs project
