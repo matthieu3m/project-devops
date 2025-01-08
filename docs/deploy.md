@@ -51,7 +51,7 @@ Voici une bonne maniere de deploy ma doc mkdocs sur une instance EC2 à essayer 
 3. Configuration des Secrets GitHub
 Pour que GitHub Actions puisse se connecter à votre instance EC2 via SSH, vous devez ajouter une clé SSH privée dans les Secrets GitHub de votre dépôt.
 
-Générez une paire de clés SSH sur votre machine locale (si ce n'est pas déjà fait) 
+Générez une paire de clés SSH sur votre machine locale (si ce n'est pas déjà fait)
     `ssh-keygen -t rsa -b 4096 -C "github-actions" -f github-actions-key`
 
 Ajoutez la clé publique à ~/.ssh/authorized_keys sur votre instance EC2 (par exemple, pour l'utilisateur ubuntu).
