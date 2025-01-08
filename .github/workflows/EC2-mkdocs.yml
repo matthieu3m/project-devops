@@ -6,7 +6,7 @@ on:
       - EC2
 
 jobs:
-  # ==> BUILD1
+  # ==> BUILD
   build:
     runs-on: ubuntu-latest
 
