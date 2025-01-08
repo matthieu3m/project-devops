@@ -44,21 +44,27 @@
                 #site
               #sparse-checkout-cone-mode: false
 
-          #2
-          - name: Setup Python
-            uses: actions/setup-python@v2
-            with:
-              python-version: "3.9"
-          
-          #3
-          - name: Install dependencies Python
-            run: |
-              pip install -r requirements.txt
-              pip install mkdocs
-          
-          #4
-          - name: Build mkdocs
-            run: mkdocs build --strict
+    #      #2
+    #      - name: Setup Python
+    #        uses: actions/setup-python@v2
+    #        with:
+    #          python-version: "3.9"
+    #      
+    #      #3
+    #      - name: Install dependencies Python
+    #        run: |
+    #          pip install -r requirements.txt
+    #          pip install mkdocs
+    #     
+    #      #4
+    #      - name: Build mkdocs
+    #        run: mkdocs build --strict
+
+          - name: Build mkdocs from Docker (creation Docker image from Dockerfile)
+            run: docker build --target build -t mkdocs-builder .
+
+          - name: Execution Build mkdocs-builder
+            run: docker container run --rm -v ./site:/app/site mkdocs-builder
 
           #5
           - name: Upload static files as artfact
