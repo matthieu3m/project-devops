@@ -33,7 +33,7 @@ jobs:
 
   # ==> DEPLOY
   deploy:
-    runs-on: project_devops # Le runs-on ici est le label du runner du server concerné
+    runs-on: project_devops # Le runs-on ici est le label du runner du server concernés
     needs: build # Ici nous avons beoins de build avant de commencer le travail du deploy
 
     steps:
