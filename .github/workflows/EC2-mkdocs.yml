@@ -27,7 +27,7 @@ jobs:
           path: site/
           name: mkdocs_ec2
 
-  # ==> DEPLOY
+  # ==> DEPLOY1
   deploy:
     runs-on: ec2
     needs: build
