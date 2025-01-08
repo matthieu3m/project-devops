@@ -1,0 +1,14 @@
+---
+name: preprod release
+
+on:
+	push:
+		branches:
+			- preprod
+
+jobs:
+	deploy:
+		runs-on: self-hosted
+
+		steps:
+			- run: ls -alh

@@ -43,8 +43,8 @@ nav:
     - Merge PR: github/merge.md
     - Github pages: github/ga-github-pages.md
   - Markdown:
-    - Les textes: markdown/Texte.md
-    - Le code: markdown/Code.md
+    - Les textes: markdown/texte.md
+    - Le code: markdown/code.md
     - Les tableaux: markdown/tableaux.md
   - Ansible:
     - Introduction à Ansible: ansible/intro.md
@@ -70,8 +70,8 @@ markdown_extensions:
       clickable_checkbox: true
 plugins:
   - tags
-  - search
-      #prebuild_index: false
+  - search:
+      prebuild_index: false
   - git-revision-date-localized:
       enable_creation_date: true
 
