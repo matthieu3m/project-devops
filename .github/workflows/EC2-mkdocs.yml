@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build mkdoc with Docker (Create image)
-        run: docker build --target build -t mkdocs-builder-EC2
+        run: docker build --target build -t mkdocs-builder-EC2 .
 
       - name: Build mkdoc with Docker (Run docker)
         run: docker container run --rm -v ./site:/app/site mkdocs-builder-EC2
