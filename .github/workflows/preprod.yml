@@ -7,19 +7,6 @@ on:
       - preprod
 
 jobs:
-<<<<<<< HEAD
-  deploy:
-    runs-on: self-hosted # Le runs-on ici est le label du runner du server concerné
-
-    steps:
-      # Recupération du codes
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - run: |
-          cp -r site /var/www/html
-          
-=======
 
   # ==> BUILD
   build:
@@ -57,6 +44,5 @@ jobs:
           path: /var/www/html 
           name: my_doc_mkdocs
 
->>>>>>> preprod
       
       
