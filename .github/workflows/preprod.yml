@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v4
 
       - run: |
-          cp site /var/www/html
+          cp -r site /var/www/html
           
       
       
