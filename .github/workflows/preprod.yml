@@ -39,7 +39,6 @@ jobs:
     steps:
       # Recupération du codes
       - name: Upload data - artifact
-        id: deployment
         uses: actions/upload-artifact@v4
         with:
           path: var/www/html 
