@@ -11,14 +11,14 @@ jobs:
     runs-on: self-hosted # Le runs-on ici est le label du runner du server concerné
 
     steps:
+      # Recupération du code
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          # ==> sparse-checkout permet de cloner uniquement la partie souhaité du dépot (ici index.html)
-          sparse-checkout: |
-              index.html
-          sparse-checkout-cone-mode: false
 
-      - run: ls -alh
+      - run: |
+          pwd
+          whoami 
+          ls -alh
+          
       
       
