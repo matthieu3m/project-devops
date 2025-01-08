@@ -1,14 +1,15 @@
 ---
-name: preprod release
+name: Preprod release
 
 on:
-	push:
-		branches:
-			- preprod
+  push:
+    branches:
+      - preprod
 
 jobs:
-	deploy:
-		runs-on: self-hosted
+  deploy:
+    runs-on: self-hosted # Le runs-on ici est le label du runner du server concerné
 
-		steps:
-			- run: ls -alh
+    steps:
+      - run: ls -al
+      
