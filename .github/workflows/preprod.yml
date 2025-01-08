@@ -1,14 +1,22 @@
 ---
-name: preprod release
+name: Preprod release
 
 on:
-	push:
-		branches:
-			- preprod
+  push:
+    branches:
+      - preprod
 
 jobs:
-	deploy:
-		runs-on: self-hosted
+  deploy:
+    runs-on: self-hosted # Le runs-on ici est le label du runner du server concerné
 
-		steps:
-			- run: ls -alh
+    steps:
+      # Recupération du codes
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - run: |
+          cp -r site /var/www/html
+          
+      
+      
