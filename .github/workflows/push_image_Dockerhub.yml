@@ -1,5 +1,6 @@
 ---
-  # DANS CE JOB NOUS DEVONS METTRE LES COMMANDES SUIVANTE POUR TAG L'IMAGE:
+  # DANS CE JOB NOUS DEVONS METTRE LES COMMANDES SUIVANTE POUR TAG L'IMAGE JUSTE AVANT DE PUSH:
+
   # git tag <nom_du_tag>
   # git push origin <nom_du_tag>
   # (par default il prendra le nom de la branch)
@@ -43,7 +44,8 @@
             username: ${{ secrets.DOCKER_USERNAME }}
             password: ${{ secrets.DOCKER_PASSWORD }}
 
-        - name: Set up Docker Buildx # Cette step nous sert à Set Docker Buildx pour charger nos images pour les différent processeurs plus tard dans le job
+        # Cette step nous sert à Set Docker Buildx pour charger nos images pour les différent processeurs plus tard dans le job
+        - name: Set up Docker Buildx
           run: |
             docker buildx create --use
   
@@ -60,7 +62,7 @@
             context: ./push_image_Dockerhub # ici, de base il faut le context général à savoir "."
             file: ./push_image_Dockerhub/Dockerfile # De même ici, il faudrait ciblé le Dockerfile à la racine
             push: true
-            tags: ${{ steps.meta.outputs.tags }} #
+            tags: ${{ steps.meta.outputs.tags }} # Fait référence à un champ généré par une étape précédente dans le workflow: l'étape où la métadonnée de l'image est extraite
             platforms: linux/arm64,linux/amd64 # avec l'option platforms nous ajoutons des options pour les differents Processeurs
             labels: ${{ steps.meta.outputs.labels }}
   
