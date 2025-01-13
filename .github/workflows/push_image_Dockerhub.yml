@@ -24,13 +24,9 @@
         - name: Checkout
           uses: actions/checkout@v4
           with:
-            sparse-checkout: true
-        
-        - name: set sparse-cherckout to include a specific folder
-          run: |
-            git config core.sparseCheckout true
-            echo "./push_image_Dockerhub" >> .git/info/sparse-checkout
-            git read-tree -mu HEAD
+            sparse-checkout: |
+              .github
+              ./push_image_Dockerhub
         
         - name: Do something with the folder (verification)
           run: |
