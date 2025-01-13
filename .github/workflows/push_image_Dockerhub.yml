@@ -24,11 +24,11 @@
         - name: Checkout
           uses: actions/checkout@v4
           with:
-            sparse-checkout: |
+            sparse-checkout: | # Ici nous ajoutons le with sparse-checkout pour cibler uniquement notre dossier push image Dockerhub
               .github
               ./push_image_Dockerhub
         
-        - name: Do something with the folder (verification)
+        - name: Do something with the folder (verification) # Permet de vérifier si le dossier à bien été associé au sparse-checkout (debug)
           run: |
             ls ./push_image_Dockerhub
   
@@ -38,7 +38,7 @@
             username: ${{ secrets.DOCKER_USERNAME }}
             password: ${{ secrets.DOCKER_PASSWORD }}
 
-        - name: Set up Docker Buildx
+        - name: Set up Docker Buildx # Cette step nous sert à Set Docker Buildx pour charger nos images pour les différent processeurs plus tard dans le job
           run: |
             docker buildx create --use
   
@@ -52,8 +52,8 @@
           id: push 
           uses: docker/build-push-action@v2
           with:
-            context: ./push_image_Dockerhub
-            file: ./push_image_Dockerhub/Dockerfile
+            context: ./push_image_Dockerhub # ici, de base il faut le context général à savoir "."
+            file: ./push_image_Dockerhub/Dockerfile # De même ici il faudrait ciblé le Dockerfile à la racine
             push: true
             tags: | 
               ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}:${{ env.TAG }}
