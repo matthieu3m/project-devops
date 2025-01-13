@@ -1,4 +1,8 @@
 ---
+  # DANS CE JOB NOUS DEVONS METTRE LES COMMANDES SUIVANTE POUR TAG L'IMAGE:
+  # git tag <nom_du_tag>
+  # git push origin <nom_du_tag>
+  # (par default il prendra le nom de la branch)
 
   name: published my first image docker
   
@@ -47,7 +51,7 @@
           id: meta
           uses: docker/metadata-action@v2
           with:
-            images: ${{ env.IMAGE_NAME}} 
+            images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}} 
         
         - name: Build and push Docker image
           id: push 
@@ -56,7 +60,7 @@
             context: ./push_image_Dockerhub # ici, de base il faut le context général à savoir "."
             file: ./push_image_Dockerhub/Dockerfile # De même ici, il faudrait ciblé le Dockerfile à la racine
             push: true
-            tags: ${{ steps.meta.outputs.tags }}
+            tags: ${{ steps.meta.outputs.tags }} #
             platforms: linux/arm64,linux/amd64 # avec l'option platforms nous ajoutons des options pour les differents Processeurs
             labels: ${{ steps.meta.outputs.labels }}
   
