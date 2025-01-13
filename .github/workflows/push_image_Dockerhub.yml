@@ -46,8 +46,7 @@
           id: meta
           uses: docker/metadata-action@v2
           with:
-            images: | # matthieu3m/image-nodejs
-              ${{ env.REGISTRY }}/${{ secrets.DOCKER_USERNAME }} 
+            images: ${{ env.IMAGE_NAME}} 
         
         - name: Build and push Docker image
           id: push 
