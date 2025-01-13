@@ -51,7 +51,9 @@
             context: ./push_image_Dockerhub
             file: ./push_image_Dockerhub/Dockerfile
             push: true
-            tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}:${{ env.TAG }}
+            tags: | 
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}:${{ env.TAG }}
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}:latest
             labels: ${{ steps.meta.outputs.labels }}
   
         - name: Generate artifact attestation
