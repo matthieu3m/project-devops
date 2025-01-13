@@ -3,8 +3,8 @@
 
     on: # yamllint disable-line rule:truthy (à relir !)
 
-      push: 
-      pull_request:
+      push: null
+      pull_request: null
     
     permissions: {}
     

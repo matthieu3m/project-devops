@@ -59,7 +59,6 @@
             push: true
             tags: | 
               ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}:${{ env.TAG }}
-              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}:latest
             platforms: linux/arm64,linux/amd64 # avec l'option platforms nous ajoutons des options pour les differents Processeurs
             labels: ${{ steps.meta.outputs.labels }}
   
