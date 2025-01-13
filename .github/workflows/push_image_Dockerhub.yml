@@ -6,6 +6,8 @@
     push:
       branches: 
         - push-image-dockerhub
+      tags:
+        - 'v*'  # Déclenche pour tout tag commençant par 'v', comme 'v0.1', 'v1.0', etc. (dans mon cas ca évite que )
   
   env:
     REGISTRY: "docker.io" 
