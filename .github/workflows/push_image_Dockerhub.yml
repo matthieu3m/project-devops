@@ -12,7 +12,7 @@
   env:
     REGISTRY: "docker.io" 
     IMAGE_NAME: "matthieu3m/project-devops" 
-    TAG: ${{ github.sha }}
+    #TAG: #$#{{ github.sha }}
          
   
   permissions: write-all
@@ -57,8 +57,8 @@
             context: ./push_image_Dockerhub # ici, de base il faut le context général à savoir "."
             file: ./push_image_Dockerhub/Dockerfile # De même ici, il faudrait ciblé le Dockerfile à la racine
             push: true
-            tags: | 
-              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}:${{ env.TAG }}
+            #tags: | 
+            #  #$#{{ env.REGISTRY }}/#$#{{ env.IMAGE_NAME}}:#${#{ env.TAG }}
             platforms: linux/arm64,linux/amd64 # avec l'option platforms nous ajoutons des options pour les differents Processeurs
             labels: ${{ steps.meta.outputs.labels }}
   
