@@ -57,7 +57,7 @@
             file: ./push_image_Dockerhub/Dockerfile # De même ici, il faudrait ciblé le Dockerfile à la racine
             push: true
             tags: | 
-              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}:${{ github.sha }}
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}:${{ github.ref_name }}
             platforms: linux/arm64,linux/amd64 # avec l'option platforms nous ajoutons des options pour les differents Processeurs
             labels: ${{ steps.meta.outputs.labels }}
   
