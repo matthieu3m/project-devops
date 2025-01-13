@@ -54,6 +54,7 @@
             tags: | 
               ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}:${{ env.TAG }}
               ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}:latest
+            platforms: linux/arm64,linux/amd64
             labels: ${{ steps.meta.outputs.labels }}
   
         - name: Generate artifact attestation
