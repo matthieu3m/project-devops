@@ -1,0 +1,69 @@
+---
+
+  name: published my first image docker
+  
+  on:
+    push:
+      branches: 
+        - push-image-dockerhub
+  
+  env:
+    REGISTRY: "docker.io" 
+    IMAGE_NAME: "matthieu3m/image-nodejs" 
+    TAG: ${{ github.sha }}
+         
+  
+  permissions: write-all
+  
+  jobs:
+    push_to_registry:
+      name: Push Docker image to Docker Hub
+      runs-on: ubuntu-latest
+  
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            sparse-checkout: true
+        
+        - name: set sparse-cherckout to include a specific folder
+          run: |
+            git config core.sparseCheckout true
+            echo "./push_image_Dockerhub" >> .git/info/sparse-checkout
+            git read-tree -mu HEAD
+        
+        - name: Do something with the folder (verification)
+          run: |
+            ls ./push_image_Dockerhub
+  
+        - name: login to docker Hub
+          uses: docker/login-action@v2
+          with:
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD }}
+  
+        - name: Extract metadata (tags, labels) for Docker
+          id: meta
+          uses: docker/metadata-action@v2
+          with:
+            images: matthieu3m/image-nodejs
+        
+        - name: Build and push Docker image
+          id: push 
+          uses: docker/build-push-action@v2
+          with:
+            context: .
+            file: ./Dockerfile
+            push: true
+            tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}:${{ env.TAG }}
+            labels: ${{ steps.meta.outputs.labels }}
+  
+        - name: Generate artifact attestation
+          uses: actions/attest-build-provenance@v2
+          with: 
+            subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
+            subject-digest: ${{ steps.push.outputs.digest }}
+            push-to-registry: true
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            
+  
